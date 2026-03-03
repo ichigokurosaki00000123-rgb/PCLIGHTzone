@@ -3,6 +3,7 @@
 // Shopping Cart System
 let cart = JSON.parse(localStorage.getItem('pclightzone_cart')) || [];
 const CART_STORAGE_KEY = 'pclightzone_cart';
+const ORDERS_STORAGE_KEY = 'pclightzone_orders';
 let cartUpdateTimer = null;
 
 function parsePrice(value) {
@@ -83,6 +84,111 @@ const partsData = {
         { name: 'WD Blue 1TB HDD', price: '2,300 PHP', image: 'https://via.placeholder.com/140x140/1a1a2e/ffd700?text=HDD', specs: ['HDD', '7200RPM', 'SATA'] }
     ]
 };
+
+// Search modal elements
+const searchToggle = document.getElementById('searchToggle');
+const searchModal = document.getElementById('searchModal');
+const searchClose = document.getElementById('searchClose');
+const searchInput = document.getElementById('searchInput');
+const priceFilter = document.getElementById('priceFilter');
+const categoryFilter = document.getElementById('categoryFilter');
+const searchResults = document.getElementById('searchResults');
+
+function openSearchModal() {
+    if (!searchModal) return;
+    searchModal.classList.add('active');
+    if (searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+    }
+    if (searchResults) {
+        searchResults.innerHTML = '<p class="empty-message">Start typing to search...</p>';
+    }
+}
+
+if (searchToggle && searchModal) {
+    searchToggle.addEventListener('click', openSearchModal);
+}
+
+if (searchClose && searchModal) {
+    searchClose.addEventListener('click', () => {
+        searchModal.classList.remove('active');
+    });
+}
+
+function performSearch() {
+    if (!searchInput || !priceFilter || !categoryFilter || !searchResults) return;
+
+    const query = searchInput.value.toLowerCase().trim();
+    const maxPriceValue = parseFloat(priceFilter.value || '0');
+    const maxPrice = Number.isFinite(maxPriceValue) ? maxPriceValue : Number.MAX_VALUE;
+    const selectedCategory = categoryFilter.value;
+
+    if (!query && !selectedCategory) {
+        searchResults.innerHTML = '<p class="empty-message">Start typing to search...</p>';
+        return;
+    }
+
+    const results = [];
+
+    Object.entries(partsData).forEach(([categoryName, products]) => {
+        products.forEach(product => {
+            const price = parsePrice(product.price);
+            const matchesQuery = !query || product.name.toLowerCase().includes(query);
+            const matchesPrice = price <= maxPrice;
+            const matchesCategory = !selectedCategory || categoryName.includes(selectedCategory);
+
+            if (matchesQuery && matchesPrice && matchesCategory) {
+                results.push({ ...product, category: categoryName });
+            }
+        });
+    });
+
+    if (!results.length) {
+        searchResults.innerHTML = '<p class="empty-message">No products found</p>';
+        return;
+    }
+
+    searchResults.innerHTML = results.map((product, index) => `
+        <div class="search-result-item" data-index="${index}">
+            <div style="font-size: 2rem; color: #ffd700; margin-bottom: 0.5rem;">
+                <i class="fas fa-microchip"></i>
+            </div>
+            <p class="product-name">${product.name}</p>
+            <p class="product-price">${product.price}</p>
+        </div>
+    `).join('');
+
+    searchResults.querySelectorAll('.search-result-item').forEach(el => {
+        const idx = parseInt(el.getAttribute('data-index'), 10);
+        const product = results[idx];
+        el.addEventListener('click', () => {
+            addToCart(product);
+            showNotification(`${product.name} added to cart!`, 'success');
+            if (searchModal) {
+                searchModal.classList.remove('active');
+            }
+        });
+    });
+}
+
+if (searchInput) {
+    searchInput.addEventListener('input', performSearch);
+}
+
+if (priceFilter) {
+    priceFilter.addEventListener('change', () => {
+        const priceValueLabel = document.getElementById('priceValue');
+        if (priceValueLabel) {
+            priceValueLabel.textContent = priceFilter.value;
+        }
+        performSearch();
+    });
+}
+
+if (categoryFilter) {
+    categoryFilter.addEventListener('change', performSearch);
+}
 
 function showPartsModal(partName) {
     const parts = partsData[partName] || [];
@@ -346,6 +452,58 @@ function updateCartUI() {
     cartTotal.textContent = `${total.toLocaleString()} PHP`;
 }
 
+// Create order from current cart and store in localStorage
+function createOrderFromCart() {
+    let user = null;
+    try {
+        user = JSON.parse(localStorage.getItem('pclightzone_user')) || null;
+    } catch {
+        user = null;
+    }
+
+    if (!user) {
+        showNotification('Please login to place an order.', 'error');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    if (!cart.length) {
+        showNotification('Your cart is empty!', 'error');
+        return;
+    }
+
+    let orders = [];
+    try {
+        orders = JSON.parse(localStorage.getItem(ORDERS_STORAGE_KEY)) || [];
+    } catch {
+        orders = [];
+    }
+
+    const total = getCartTotal();
+
+    const order = {
+        id: Date.now().toString(),
+        userId: user.id,
+        items: cart.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity || 1
+        })),
+        total: `${total.toLocaleString()} PHP`,
+        status: 'pending',
+        date: new Date().toISOString(),
+        tracking: 'TRK' + Date.now()
+    };
+
+    orders.push(order);
+    localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(orders));
+
+    clearCart();
+    closeCart();
+    showNotification('Order placed successfully! Check your profile for details.', 'success');
+}
+
 // Cart Event Handlers
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize cart UI
@@ -386,8 +544,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (cart.length === 0) {
                 showNotification('Your cart is empty!', 'error');
             } else {
-                showNotification('Proceeding to checkout...', 'info');
-                // Here you would typically redirect to a checkout page
+                createOrderFromCart();
             }
         });
     }
@@ -2061,10 +2218,38 @@ document.querySelector('.btn-secondary')?.addEventListener('click', function() {
     document.querySelector('#products').scrollIntoView({ behavior: 'smooth' });
 });
 
-// Initialize animations on page load
+// Update auth buttons vs. user link in header
+function updateAuthUI() {
+    const authButtons = document.getElementById('authButtons');
+    const userLink = document.getElementById('userLink');
+    const userDisplayName = document.getElementById('userDisplayName');
+
+    if (!authButtons || !userLink) return;
+
+    let user = null;
+    try {
+        user = JSON.parse(localStorage.getItem('pclightzone_user')) || null;
+    } catch {
+        user = null;
+    }
+
+    if (user) {
+        authButtons.style.display = 'none';
+        userLink.style.display = 'flex';
+        if (userDisplayName) {
+            userDisplayName.textContent = user.firstName || user.email || 'Account';
+        }
+    } else {
+        authButtons.style.display = 'flex';
+        userLink.style.display = 'none';
+    }
+}
+
+// Initialize animations and auth UI on page load
 document.addEventListener('DOMContentLoaded', () => {
     typeWriter();
     createParticles();
+    updateAuthUI();
     
     // Add loading animation
     document.body.style.opacity = '0';

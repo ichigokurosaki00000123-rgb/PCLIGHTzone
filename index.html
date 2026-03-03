@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="pclightzone-style.css">
+    <link rel="stylesheet" href="features-styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -27,10 +28,24 @@
                     <li><a href="#contact">Contact</a></li>
                 </ul>
                 <div class="nav-actions">
-                    <button class="cart-toggle" id="cartToggle">
+                    <button class="search-toggle" id="searchToggle" title="Search products">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="cart-toggle" id="cartToggle" title="Shopping cart">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="cart-count" id="cartCount">0</span>
                     </button>
+                    <div id="authButtons" class="auth-buttons">
+                        <a href="login.html" class="auth-link login-link">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                        <a href="register.html" class="auth-link register-link">
+                            <i class="fas fa-user-plus"></i> Sign Up
+                        </a>
+                    </div>
+                    <a href="profile.html" id="userLink" class="user-link" style="display: none;" title="My account">
+                        <i class="fas fa-user-circle"></i> <span id="userDisplayName"></span>
+                    </a>
                     <div class="hamburger">
                         <span></span>
                         <span></span>
@@ -77,6 +92,69 @@
                     <i class="fas fa-credit-card"></i> Checkout
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-header">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search products, brands, or parts...">
+                <button class="search-close" id="searchClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="search-filters">
+                <input type="range" id="priceFilter" min="0" max="50000" step="1000" value="50000" class="price-slider">
+                <p><span id="priceValue">50000</span> PHP</p>
+                <select id="categoryFilter" class="category-select">
+                    <option value="">All Categories</option>
+                    <option value="Laptops">Laptops</option>
+                    <option value="CPU">CPUs</option>
+                    <option value="GPU">Graphics Cards</option>
+                    <option value="RAM">RAM Memory</option>
+                    <option value="Storage">Storage</option>
+                    <option value="Keyboard">Keyboards</option>
+                    <option value="Mouse">Mice</option>
+                    <option value="Monitor">Monitors</option>
+                </select>
+            </div>
+            <div class="search-results" id="searchResults">
+                <p class="empty-message">Start typing to search...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div class="modal" id="reviewModal">
+        <div class="modal-content review-modal">
+            <button class="modal-close" id="reviewModalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2>Write a Review</h2>
+            <form id="reviewForm" class="review-form">
+                <input type="hidden" id="reviewProductId">
+                <input type="hidden" id="reviewProductName">
+
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <p id="reviewProductDisplay" style="color: #ffd700;"></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Rating</label>
+                    <div class="star-rating" id="starRating">
+                    </div>
+                    <input type="hidden" id="ratingValue" value="5">
+                </div>
+
+                <div class="form-group">
+                    <label>Your Review</label>
+                    <textarea id="reviewText" placeholder="Share your experience with this product..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-auth-primary">Submit Review</button>
+            </form>
         </div>
     </div>
 
@@ -381,8 +459,10 @@
         </div>
     </footer>
 
-    
-
+    <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="supabase-auth.js"></script>
+    <script src="auth-script.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PCLIGHTzone</title>
+    <link rel="stylesheet" href="pclightzone-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="auth-styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <img src="Logo.jpg" alt="PCLIGHT ZONE Logo" class="logo-img">
+                    <span>PCLIGHTzone</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#products">Products</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <a href="index.html" class="nav-link">Back to Home</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Login Container -->
+    <div class="auth-container">
+        <div class="auth-wrapper">
+            <div class="auth-content">
+                <h1 class="auth-title">Welcome Back</h1>
+                <p class="auth-subtitle">Sign in to your PCLIGHTzone account</p>
+
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" name="email" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
+                    </div>
+
+                    <div class="remember-forgot">
+                        <label class="remember-me">
+                            <input type="checkbox" name="remember">
+                            Remember me
+                        </label>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-auth-primary">Sign In</button>
+                </form>
+
+                <div class="divider">Or</div>
+
+                <div class="social-login">
+                    <button class="social-btn google-btn">
+                        <i class="fab fa-google"></i> Sign in with Google
+                    </button>
+                </div>
+
+                <p class="auth-footer">
+                    Don't have an account? <a href="register.html" class="auth-link">Sign up here</a>
+                </p>
+            </div>
+
+            <div class="auth-image">
+                <div class="auth-graphic">
+                    <i class="fas fa-laptop"></i>
+                    <p>Welcome to your premium computer store</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="supabase-auth.js"></script>
+    <script src="auth-script.js"></script>
+</body>
+</html>

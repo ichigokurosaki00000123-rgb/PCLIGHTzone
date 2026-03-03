@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - PCLIGHTzone</title>
+    <link rel="stylesheet" href="pclightzone-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="auth-styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <img src="Logo.jpg" alt="PCLIGHT ZONE Logo" class="logo-img">
+                    <span>PCLIGHTzone</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#products">Products</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <a href="index.html" class="nav-link">Back to Home</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Register Container -->
+    <div class="auth-container">
+        <div class="auth-wrapper">
+            <div class="auth-content">
+                <h1 class="auth-title">Join PCLIGHTzone</h1>
+                <p class="auth-subtitle">Create your account and start shopping</p>
+
+                <form id="registerForm" class="auth-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" placeholder="John" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">Email Address</label>
+                        <input type="email" id="registerEmail" name="email" placeholder="your.email@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" name="password" placeholder="Min. 8 characters" required>
+                        <small>Password must be at least 8 characters long</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+63 9XX XXX XXXX" required>
+                    </div>
+
+                    <label class="terms-checkbox">
+                        <input type="checkbox" name="terms" required>
+                        I agree to the <a href="#" class="terms-link">Terms & Conditions</a> and <a href="#" class="terms-link">Privacy Policy</a>
+                    </label>
+
+                    <button type="submit" class="btn-auth-primary">Create Account</button>
+                </form>
+
+                <p class="auth-footer">
+                    Already have an account? <a href="login.html" class="auth-link">Sign in here</a>
+                </p>
+            </div>
+
+            <div class="auth-image">
+                <div class="auth-graphic">
+                    <i class="fas fa-desktop"></i>
+                    <p>Get access to exclusive deals and promotions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="supabase-auth.js"></script>
+    <script src="auth-script.js"></script>
+</body>
+</html>

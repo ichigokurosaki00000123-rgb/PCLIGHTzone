@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - PCLIGHTzone</title>
+    <link rel="stylesheet" href="pclightzone-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="profile-styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <img src="Logo.jpg" alt="PCLIGHT ZONE Logo" class="logo-img">
+                    <span>PCLIGHTzone</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#products">Products</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button class="cart-toggle" id="cartToggle">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                    <div class="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> Shopping Cart</h3>
+            <button class="cart-close" id="cartClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-body">
+            <div class="cart-items" id="cartItems"></div>
+            <div class="cart-empty" id="cartEmpty">
+                <i class="fas fa-shopping-basket"></i>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-summary">
+                <div class="summary-item">
+                    <span>Subtotal:</span>
+                    <span id="cartSubtotal">0 PHP</span>
+                </div>
+                <div class="summary-item total">
+                    <span>Total:</span>
+                    <span id="cartTotal">0 PHP</span>
+                </div>
+            </div>
+            <div class="cart-actions">
+                <button class="btn-clear-cart" id="clearCart">
+                    <i class="fas fa-trash"></i> Clear Cart
+                </button>
+                <button class="btn-checkout">
+                    <i class="fas fa-credit-card"></i> Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="container">
+            <div class="profile-wrapper">
+                <!-- Sidebar Navigation -->
+                <div class="profile-sidebar">
+                    <div class="user-card">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div id="userInfoCard">
+                            <h3 id="userNameDisplay">User Name</h3>
+                            <p id="userEmailDisplay">user@email.com</p>
+                        </div>
+                    </div>
+
+                    <nav class="profile-nav">
+                        <button class="profile-nav-item active" data-section="dashboard">
+                            <i class="fas fa-chart-line"></i> Dashboard
+                        </button>
+                        <button class="profile-nav-item" data-section="profile">
+                            <i class="fas fa-user"></i> Profile
+                        </button>
+                        <button class="profile-nav-item" data-section="orders">
+                            <i class="fas fa-box"></i> Orders
+                        </button>
+                        <button class="profile-nav-item" data-section="wishlist">
+                            <i class="fas fa-heart"></i> Wishlist
+                        </button>
+                        <button class="profile-nav-item" data-section="reviews">
+                            <i class="fas fa-star"></i> Reviews
+                        </button>
+                        <button class="profile-nav-item" data-section="settings">
+                            <i class="fas fa-cog"></i> Settings
+                        </button>
+                        <button class="profile-nav-item logout-btn" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </nav>
+                </div>
+
+                <!-- Main Content -->
+                <div class="profile-content">
+                    <!-- Dashboard Section -->
+                    <div class="profile-section-content active" id="dashboardSection">
+                        <h2>Welcome Back!</h2>
+                        <div class="dashboard-stats">
+                            <div class="stat-card">
+                                <i class="fas fa-shopping-bag"></i>
+                                <div>
+                                    <h4 id="totalOrders">0</h4>
+                                    <p>Total Orders</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-heart"></i>
+                                <div>
+                                    <h4 id="totalWishlist">0</h4>
+                                    <p>Wishlist Items</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-star"></i>
+                                <div>
+                                    <h4 id="totalReviews">0</h4>
+                                    <p>Reviews Posted</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-wallet"></i>
+                                <div>
+                                    <h4 id="totalSpent">0 PHP</h4>
+                                    <p>Total Spent</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Edit Section -->
+                    <div class="profile-section-content" id="profileSection">
+                        <h2>Edit Profile</h2>
+                        <form id="profileForm" class="profile-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profileFirstName">First Name</label>
+                                    <input type="text" id="profileFirstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileLastName">Last Name</label>
+                                    <input type="text" id="profileLastName" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profileEmail">Email Address</label>
+                                <input type="email" id="profileEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="profilePhone">Phone Number</label>
+                                <input type="tel" id="profilePhone">
+                            </div>
+                            <div class="form-group">
+                                <label for="profileAddress">Address</label>
+                                <input type="text" id="profileAddress" placeholder="Street address">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profileCity">City</label>
+                                    <input type="text" id="profileCity">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileZip">Zip Code</label>
+                                    <input type="text" id="profileZip">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-auth-primary">Save Changes</button>
+                        </form>
+                    </div>
+
+                    <!-- Orders Section -->
+                    <div class="profile-section-content" id="ordersSection">
+                        <h2>Order History</h2>
+                        <div id="ordersList" class="orders-list">
+                            <p class="empty-message">No orders yet</p>
+                        </div>
+                    </div>
+
+                    <!-- Wishlist Section -->
+                    <div class="profile-section-content" id="wishlistSection">
+                        <h2>My Wishlist</h2>
+                        <div id="wishlistContainer" class="wishlist-grid">
+                            <p class="empty-message">Your wishlist is empty</p>
+                        </div>
+                    </div>
+
+                    <!-- Reviews Section -->
+                    <div class="profile-section-content" id="reviewsSection">
+                        <h2>My Reviews</h2>
+                        <div id="reviewsList" class="reviews-list">
+                            <p class="empty-message">You haven't written any reviews yet</p>
+                        </div>
+                    </div>
+
+                    <!-- Settings Section -->
+                    <div class="profile-section-content" id="settingsSection">
+                        <h2>Account Settings</h2>
+                        <div class="settings-group">
+                            <h3>Change Password</h3>
+                            <form id="passwordForm" class="settings-form">
+                                <div class="form-group">
+                                    <label for="currentPassword">Current Password</label>
+                                    <input type="password" id="currentPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="newPassword">New Password</label>
+                                    <input type="password" id="newPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmNewPassword">Confirm Password</label>
+                                    <input type="password" id="confirmNewPassword" required>
+                                </div>
+                                <button type="submit" class="btn-auth-primary">Update Password</button>
+                            </form>
+                        </div>
+                        <div class="settings-group">
+                            <h3>Preferences</h3>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="emailNotifications" checked>
+                                Receive email notifications about orders
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="newsLetterOptIn" checked>
+                                Subscribe to our newsletter
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>PCLIGHT ZONE</h3>
+                    <p>Your trusted partner for all computer needs.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#products">Products</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PCLIGHTzone. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="supabase-auth.js"></script>
+    <script src="auth-script.js"></script>
+    <script src="script.js"></script>
+    <script src="profile-script.js"></script>
+</body>
+</html>
