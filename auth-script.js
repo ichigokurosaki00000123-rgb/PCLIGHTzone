@@ -267,5 +267,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateAuthUI();
             }
         });
+        // Fix Google sign-in button
+        const googleBtn = document.getElementById('googleSignInBtn');
+        if (googleBtn) {
+            googleBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                try {
+                    const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+                    if (error) {
+                        showAlert('Google sign-in failed: ' + error.message, 'error');
+                    }
+                } catch (err) {
+                    showAlert('Google sign-in error: ' + err.message, 'error');
+                }
+            });
+        }
     }
 });

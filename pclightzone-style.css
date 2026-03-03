@@ -139,12 +139,12 @@ body {
     font-size: 4rem;
     font-weight: bold;
     margin-bottom: 1rem;
-    background: linear-gradient(45deg, #ffd700, #ffb300, #ffd700);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: gradientShift 3s ease infinite;
+    color: #ffd700;
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    -webkit-text-fill-color: initial;
+    animation: none;
 }
 
 .glitch {
