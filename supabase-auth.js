@@ -23,14 +23,14 @@ async function registerWithSupabase(firstName, lastName, email, password, phone)
         // Update profile
         const { error: profileError } = await supabase
             .from('profiles')
-            .update({
+            .upsert({
+                id: authData.user.id,
                 first_name: firstName,
                 last_name: lastName,
                 phone: phone
-            })
-            .eq('id', authData.user.id);
+            });
 
-        if (profileError) console.error('Profile update error:', profileError);
+        if (profileError) console.error('Profile upsert error:', profileError);
 
         showAlert('Account created! Please check your email to verify.', 'success');
         return authData.user;
@@ -160,14 +160,29 @@ async function checkSupabaseAuth() {
         const profile = await getUserProfile(user.id);
         if (profile) {
             document.getElementById('userDisplayName').textContent = profile.first_name || user.email;
+        } else {
+            // Create profile for OAuth users (like Google)
+            const meta = user.user_metadata || {};
+            const firstName = meta.first_name || meta.firstName || meta.given_name || (user.email ? user.email.split('@')[0] : 'User');
+            const lastName = meta.last_name || meta.lastName || meta.family_name || '';
+            const { error } = await supabase
+                .from('profiles')
+                .upsert({
+                    id: user.id,
+                    first_name: firstName,
+                    last_name: lastName,
+                    phone: '' // Can be updated later
+                });
+            if (error) console.error('Profile creation error for OAuth user:', error);
+            else document.getElementById('userDisplayName').textContent = firstName || user.email;
         }
     } else if (authButtons && userLink) {
         authButtons.style.display = 'flex';
         userLink.style.display = 'none';
     }
 
-    // Redirect to login if not authenticated on profile page
-    if (window.location.pathname.includes('profile.html') && !user) {
+    // Redirect to login if not authenticated on profile or home page
+    if ((window.location.pathname.includes('profile.html') || window.location.pathname.includes('home.html')) && !user) {
         window.location.href = 'login.html';
     }
 }

@@ -8,8 +8,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="pclightzone-style.css">
-    <link rel="stylesheet" href="features-styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- custom tweaks for index display -->
+    <style>
+        /* ensure hero buttons stand out on smaller screens */
+        .hero-buttons button { min-width: 180px; }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -17,24 +21,10 @@
         <nav class="navbar">
             <div class="nav-container">
                 <div class="logo">
-                    <img src="Logo.jpg" alt="PCLIGHT ZONE Logo" class="logo-img">
-                    <span>PCLIGHTzone</span>
+                    <img src="Logo.jpg" alt="PCLIGHT ZONE Logo" class="logo-img" style="box-shadow: 0 4px 20px rgba(255,215,0,0.5);">
+                    <span style="font-size:2rem;letter-spacing:2px;">PCLIGHTzone</span>
                 </div>
-                <ul class="nav-menu">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#products">Products</a></li>
-                    <li><a href="#laptops">Laptops</a></li>
-                    <li><a href="#parts">Parts</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
                 <div class="nav-actions">
-                    <button class="search-toggle" id="searchToggle" title="Search products">
-                        <i class="fas fa-search"></i>
-                    </button>
-                    <button class="cart-toggle" id="cartToggle" title="Shopping cart">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-count" id="cartCount">0</span>
-                    </button>
                     <div id="authButtons" class="auth-buttons">
                         <a href="login.html" class="auth-link login-link">
                             <i class="fas fa-sign-in-alt"></i> Login
@@ -46,7 +36,7 @@
                     <a href="profile.html" id="userLink" class="user-link" style="display: none;" title="My account">
                         <i class="fas fa-user-circle"></i> <span id="userDisplayName"></span>
                     </a>
-                    <div class="hamburger">
+                    <div class="hamburger" role="button" aria-label="Toggle navigation">
                         <span></span>
                         <span></span>
                         <span></span>
@@ -56,119 +46,17 @@
         </nav>
     </header>
 
-    <!-- Shopping Cart Sidebar -->
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h3><i class="fas fa-shopping-cart"></i> Shopping Cart</h3>
-            <button class="cart-close" id="cartClose">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="cart-body">
-            <div class="cart-items" id="cartItems">
-                <!-- Cart items will be dynamically added here -->
-            </div>
-            <div class="cart-empty" id="cartEmpty">
-                <i class="fas fa-shopping-basket"></i>
-                <p>Your cart is empty</p>
-            </div>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-summary">
-                <div class="summary-item">
-                    <span>Subtotal:</span>
-                    <span id="cartSubtotal">0 PHP</span>
-                </div>
-                <div class="summary-item total">
-                    <span>Total:</span>
-                    <span id="cartTotal">0 PHP</span>
-                </div>
-            </div>
-            <div class="cart-actions">
-                <button class="btn-clear-cart" id="clearCart">
-                    <i class="fas fa-trash"></i> Clear Cart
-                </button>
-                <button class="btn-checkout">
-                    <i class="fas fa-credit-card"></i> Checkout
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Search Modal -->
-    <div class="search-modal" id="searchModal">
-        <div class="search-modal-content">
-            <div class="search-header">
-                <input type="text" id="searchInput" class="search-input" placeholder="Search products, brands, or parts...">
-                <button class="search-close" id="searchClose">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="search-filters">
-                <input type="range" id="priceFilter" min="0" max="50000" step="1000" value="50000" class="price-slider">
-                <p><span id="priceValue">50000</span> PHP</p>
-                <select id="categoryFilter" class="category-select">
-                    <option value="">All Categories</option>
-                    <option value="Laptops">Laptops</option>
-                    <option value="CPU">CPUs</option>
-                    <option value="GPU">Graphics Cards</option>
-                    <option value="RAM">RAM Memory</option>
-                    <option value="Storage">Storage</option>
-                    <option value="Keyboard">Keyboards</option>
-                    <option value="Mouse">Mice</option>
-                    <option value="Monitor">Monitors</option>
-                </select>
-            </div>
-            <div class="search-results" id="searchResults">
-                <p class="empty-message">Start typing to search...</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Review Modal -->
-    <div class="modal" id="reviewModal">
-        <div class="modal-content review-modal">
-            <button class="modal-close" id="reviewModalClose">
-                <i class="fas fa-times"></i>
-            </button>
-            <h2>Write a Review</h2>
-            <form id="reviewForm" class="review-form">
-                <input type="hidden" id="reviewProductId">
-                <input type="hidden" id="reviewProductName">
-
-                <div class="form-group">
-                    <label>Product Name</label>
-                    <p id="reviewProductDisplay" style="color: #ffd700;"></p>
-                </div>
-
-                <div class="form-group">
-                    <label>Rating</label>
-                    <div class="star-rating" id="starRating">
-                    </div>
-                    <input type="hidden" id="ratingValue" value="5">
-                </div>
-
-                <div class="form-group">
-                    <label>Your Review</label>
-                    <textarea id="reviewText" placeholder="Share your experience with this product..." required></textarea>
-                </div>
-
-                <button type="submit" class="btn-auth-primary">Submit Review</button>
-            </form>
-        </div>
-    </div>
-
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
-            <h1 class="hero-title">
+            <h1 class="hero-title" style="font-family:'Orbitron',sans-serif;font-size:4rem;letter-spacing:3px;">
                 <span class="glitch">PCLIGHTzone</span>
             </h1>
-            <p class="hero-subtitle">Your Complete Computer & Laptop Store</p>
-            <p class="hero-description">Premium laptops, desktop, and computer parts at unbeatable prices</p>
-            <div class="hero-buttons">
-                <button class="btn-primary">Shop Now</button>
-                <button class="btn-secondary">View Products</button>
+            <p class="hero-subtitle" style="color:#ffd700;font-size:1.7rem;margin-bottom:1.2rem;">Your Complete Computer & Laptop Store</p>
+            <p class="hero-description" style="color:#fff;font-size:1.15rem;margin-bottom:2.2rem;">Premium laptops, desktops, and computer parts at unbeatable prices</p>
+            <div class="hero-buttons" style="gap:1.5rem;">
+                <button class="btn-primary" id="shopNowBtn" style="padding:18px 38px;font-size:1.15rem;border-radius:30px;box-shadow:0 6px 24px rgba(255,215,0,0.4);">Shop Now</button>
+                <button class="btn-secondary" id="viewProductsBtn" style="padding:18px 38px;font-size:1.15rem;border-radius:30px;border:2px solid #ffd700;color:#ffd700;background:transparent;">View Products</button>
             </div>
         </div>
         <div class="hero-animation">
@@ -190,223 +78,24 @@
             <h2 class="section-title">Why Choose PCLIGHTzone?</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <i class="fas fa-truck"></i>
-                    <h3>Fast Delivery</h3>
-                    <p>Same day delivery available</p>
+                    <i class="fas fa-truck" style="font-size:3.2rem;color:#ffd700;margin-bottom:1rem;"></i>
+                    <h3 style="color:#fff;font-size:1.3rem;">Fast Delivery</h3>
+                    <p style="color:#ccc;">Same day delivery available</p>
                 </div>
                 <div class="feature-card">
-                    <i class="fas fa-shield-alt"></i>
-                    <h3>Warranty</h3>
-                    <p>1-3 years warranty on all products</p>
+                    <i class="fas fa-shield-alt" style="font-size:3.2rem;color:#ffd700;margin-bottom:1rem;"></i>
+                    <h3 style="color:#fff;font-size:1.3rem;">Warranty</h3>
+                    <p style="color:#ccc;">1-3 years warranty on all products</p>
                 </div>
                 <div class="feature-card">
-                    <i class="fas fa-headset"></i>
-                    <h3>24/7 Support</h3>
-                    <p>Round the clock customer service</p>
+                    <i class="fas fa-headset" style="font-size:3.2rem;color:#ffd700;margin-bottom:1rem;"></i>
+                    <h3 style="color:#fff;font-size:1.3rem;">24/7 Support</h3>
+                    <p style="color:#ccc;">Round the clock customer service</p>
                 </div>
                 <div class="feature-card">
-                    <i class="fas fa-dollar-sign"></i>
-                    <h3>Best Prices</h3>
-                    <p>Competitive pricing guaranteed</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Laptops Section -->
-    <section id="laptops" class="products-section">
-        <div class="container">
-            <h2 class="section-title">Premium Laptops</h2>
-            <div class="laptop-brands">
-                <div class="brand-card">
-                    <div class="brand-logo">
-                        <i class="fas fa-laptop"></i>
-                    </div>
-                    <h3>DELL</h3>
-                    <p>Inspiron, XPS, Alienware series</p>
-                    <button class="btn-brand">View DELL Laptops</button>
-                </div>
-                <div class="brand-card">
-                    <div class="brand-logo">
-                        <i class="fas fa-laptop"></i>
-                    </div>
-                    <h3>HP</h3>
-                    <p>Pavilion, Envy, Omen series</p>
-                    <button class="btn-brand">View HP Laptops</button>
-                </div>
-                <div class="brand-card">
-                    <div class="brand-logo">
-                        <i class="fas fa-laptop"></i>
-                    </div>
-                    <h3>LENOVO</h3>
-                    <p>ThinkPad, IdeaPad, Legion series</p>
-                    <button class="btn-brand">View LENOVO Laptops</button>
-                </div>
-                <div class="brand-card">
-                    <div class="brand-logo">
-                        <i class="fas fa-laptop"></i>
-                    </div>
-                    <h3>ASUS</h3>
-                    <p>Vivobook, ZenBook, ROG series</p>
-                    <button class="btn-brand">View ASUS Laptops</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Computer Parts Section -->
-    <section id="parts" class="parts-section">
-        <div class="container">
-            <h2 class="section-title">Computer Parts & Accessories</h2>
-            <div class="parts-grid">
-                <div class="part-card">
-                    <div class="part-icon">
-                        <i class="fas fa-microchip"></i>
-                    </div>
-                    <h3>Processors (CPU)</h3>
-                    <p>Intel Core, AMD Ryzen series</p>
-                    <button class="btn-part" data-part="Processors (CPU)">View CPUs</button>
-                </div>
-                <div class="part-card">
-                    <div class="part-icon">
-                        <i class="fas fa-memory"></i>
-                    </div>
-                    <h3>RAM Memory</h3>
-                    <p>DDR4, DDR5 modules</p>
-                    <button class="btn-part" data-part="RAM Memory">View RAM</button>
-                </div>
-                <div class="part-card">
-                    <div class="part-icon">
-                        <i class="fas fa-tv"></i>
-                    </div>
-                    <h3>Graphics Cards</h3>
-                    <p>NVIDIA, AMD GPUs</p>
-                    <button class="btn-part" data-part="Graphics Cards">View GPUs</button>
-                </div>
-                <div class="part-card">
-                    <div class="part-icon">
-                        <i class="fas fa-server"></i>
-                    </div>
-                    <h3>Motherboards</h3>
-                    <p>ASUS, MSI, Gigabyte</p>
-                    <button class="btn-part" data-part="Motherboards">View Boards</button>
-                </div>
-                <div class="part-card">
-                    <div class="part-icon">
-                        <i class="fas fa-keyboard"></i>
-                    </div>
-                    <h3>Keyboards</h3>
-                    <p>Mechanical, Gaming, Office</p>
-                    <button class="btn-part" data-part="Keyboards">View Keyboards</button>
-                </div>
-                <div class="part-card">
-                    <div class="part-icon">
-                        <i class="fas fa-mouse"></i>
-                    </div>
-                    <h3>Mouse</h3>
-                    <p>Gaming, Wireless, Ergonomic</p>
-                    <button class="btn-part" data-part="Mouse">View Mouse</button>
-                </div>
-                <div class="part-card">
-                    <div class="part-icon">
-                        <i class="fas fa-desktop"></i>
-                    </div>
-                    <h3>Monitors</h3>
-                    <p>LED, Gaming, 4K displays</p>
-                    <button class="btn-part" data-part="Monitors">View Monitors</button>
-                </div>
-                <div class="part-card">
-                    <div class="part-icon">
-                        <i class="fas fa-hdd"></i>
-                    </div>
-                    <h3>Storage</h3>
-                    <p>SSD, HDD, External drives</p>
-                    <button class="btn-part" data-part="Storage">View Storage</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Products Showcase -->
-    <section id="products" class="showcase">
-        <div class="container">
-            <h2 class="section-title">Featured Products</h2>
-            <div class="product-carousel">
-                <div class="product-card">
-                    <div class="product-image">
-                        <i class="fas fa-laptop"></i>
-                    </div>
-                    <h3>Gaming Laptop Pro</h3>
-                    <button class="btn-product">View Details</button>
-                </div>
-                <div class="product-card">
-                    <div class="product-image">
-                        <i class="fas fa-desktop"></i>
-                    </div>
-                    <h3>Gaming Desktop</h3>
-                    <button class="btn-product">View Details</button>
-                </div>
-                <div class="product-card">
-                    <div class="product-image">
-                        <i class="fas fa-microchip"></i>
-                    </div>
-                    <h3>RTX 4070 GPU</h3>
-                    <button class="btn-product">View Details</button>
-                </div>
-                <div class="product-card">
-                    <div class="product-image">
-                        <i class="fas fa-memory"></i>
-                    </div>
-                    <h3>32GB DDR5 RAM</h3>
-                    <button class="btn-product">View Details</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title">Get In Touch</h2>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <h3>Address</h3>
-                            <p><a href="https://www.google.com/maps/search/?api=1&query=Ground+Floor+I.T+Center+Gilmore+Ave.+Quezon+City" target="_blank" class="address-link">Ground Floor I.T Center Gilmore Ave. Quezon City</a></p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <div>
-                            <h3>Phone</h3>
-                            <p>+63 9062485525</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h3>Email</h3>
-                            <p>wintech_rafael@yahoo.com</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-clock"></i>
-                        <div>
-                            <h3>Hours</h3>
-                            <p>Mon-Sun: 10AM-6PM</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="contact-form">
-                    <form>
-                        <input type="text" placeholder="Your Name" required>
-                        <input type="email" placeholder="Your Email" required>
-                        <input type="Contact Number" placeholder="Contact Number" required>
-                        <textarea placeholder="Your Message" rows="5" required></textarea>
-                        <button type="submit" class="btn-submit">Send Message</button>
-                    </form>
+                    <i class="fas fa-dollar-sign" style="font-size:3.2rem;color:#ffd700;margin-bottom:1rem;"></i>
+                    <h3 style="color:#fff;font-size:1.3rem;">Best Prices</h3>
+                    <p style="color:#ccc;">Competitive pricing guaranteed</p>
                 </div>
             </div>
         </div>
@@ -430,9 +119,9 @@
                     <h3>Quick Links</h3>
                     <ul>
                         <li><a href="#home">Home</a></li>
-                        <li><a href="#products">Products</a></li>
-                        <li><a href="#laptops">Laptops</a></li>
-                        <li><a href="#parts">Parts</a></li>
+                        <li><a href="#">Products</a></li>
+                        <li><a href="#">Laptops</a></li>
+                        <li><a href="#">Parts</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -459,10 +148,10 @@
         </div>
     </footer>
 
-    <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="supabase.min.js"></script>
     <script src="supabase-config.js"></script>
     <script src="supabase-auth.js"></script>
     <script src="auth-script.js"></script>
-    <script src="script.js"></script>
+    <script src="landing-script.js"></script>
 </body>
 </html>

@@ -70,6 +70,22 @@ if (loginForm) {
         const password = document.getElementById('loginPassword').value;
         const rememberMe = document.querySelector('input[name="remember"]')?.checked;
 
+        // Validation
+        if (!email) {
+            showAlert('Please enter your email address.', 'error');
+            return;
+        }
+
+        if (!email.includes('@') || !email.includes('.')) {
+            showAlert('Please enter a valid email address.', 'error');
+            return;
+        }
+
+        if (!password) {
+            showAlert('Please enter your password.', 'error');
+            return;
+        }
+
         const user = await localLogin(email, password);
 
         if (user) {
@@ -79,7 +95,7 @@ if (loginForm) {
                 localStorage.removeItem('pclightzone_remember');
             }
             setTimeout(() => {
-                window.location.href = 'profile.html';
+                window.location.href = 'home.html';
             }, 1000);
         }
     });
@@ -97,11 +113,16 @@ if (registerForm) {
         const password = document.getElementById('registerPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
         const phone = document.getElementById('phone').value.trim();
-        const termsAccepted = document.querySelector('input[name="terms"]')?.checked;
+        const termsAccepted = document.querySelector('input[name="terms"]').checked;
 
         // Validation
         if (!firstName || !lastName) {
             showAlert('Please enter your first and last name.', 'error');
+            return;
+        }
+
+        if (!email || !email.includes('@') || !email.includes('.')) {
+            showAlert('Please enter a valid email address.', 'error');
             return;
         }
 
@@ -110,8 +131,18 @@ if (registerForm) {
             return;
         }
 
+        if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+            showAlert('Password must contain at least one uppercase letter, one lowercase letter, and one number.', 'error');
+            return;
+        }
+
         if (password !== confirmPassword) {
             showAlert('Passwords do not match.', 'error');
+            return;
+        }
+
+        if (!phone || !/^\+?[\d\s-()]+$/.test(phone)) {
+            showAlert('Please enter a valid phone number.', 'error');
             return;
         }
 
@@ -120,11 +151,11 @@ if (registerForm) {
             return;
         }
 
-        const user = await localRegister(firstName, lastName, email, password, phone);
+        const user = await registerWithSupabase(firstName, lastName, email, password, phone);
 
         if (user) {
             setTimeout(() => {
-                window.location.href = 'profile.html';
+                window.location.href = 'home.html';
             }, 1000);
         }
     });
@@ -178,7 +209,7 @@ async function signInWithProvider(provider) {
             return;
         }
 
-        const redirectTo = `${window.location.origin}/profile.html`;
+        const redirectTo = `${window.location.origin}/home.html`;
 
         const { error } = await supabase.auth.signInWithOAuth({
             provider,
@@ -196,7 +227,7 @@ async function signInWithProvider(provider) {
 }
 
 // Attach handler to Google button if present
-const googleBtn = document.querySelector('.google-btn');
+const googleBtn = document.getElementById('googleSignInBtn');
 if (googleBtn) {
     googleBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -272,14 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (googleBtn) {
             googleBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
-                try {
-                    const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
-                    if (error) {
-                        showAlert('Google sign-in failed: ' + error.message, 'error');
-                    }
-                } catch (err) {
-                    showAlert('Google sign-in error: ' + err.message, 'error');
-                }
+                await signInWithProvider('google');
             });
         }
     }

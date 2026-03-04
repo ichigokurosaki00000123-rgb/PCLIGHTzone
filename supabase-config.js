@@ -6,10 +6,11 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 // Initialize Supabase client using global library from CDN
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-const supabase = supabaseClient;
 
 // Export for use in other files
+window.supabase = supabaseClient;
 window.supabaseClient = supabaseClient;
+console.log('supabaseClient:', supabaseClient);
 
 // Test connection
 async function testSupabaseConnection() {
