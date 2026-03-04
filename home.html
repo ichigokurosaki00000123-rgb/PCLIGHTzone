@@ -312,9 +312,14 @@
             <!-- Category Filters -->
             <div class="category-filters">
                 <button class="category-filter active" data-category="all">All Products</button>
-                <button class="category-filter" data-category="desktops">Desktops</button>
-                <button class="category-filter" data-category="laptops">Laptops</button>
-                <button class="category-filter" data-category="components">Components</button>
+                <button class="category-filter" data-category="Processors (CPU)">CPU</button>
+                <button class="category-filter" data-category="RAM Memory">RAM</button>
+                <button class="category-filter" data-category="Graphics Cards">GPU</button>
+                <button class="category-filter" data-category="Motherboards">Motherboard</button>
+                <button class="category-filter" data-category="Keyboards">Keyboard</button>
+                <button class="category-filter" data-category="Mouse">Mouse</button>
+                <button class="category-filter" data-category="Monitors">Monitor</button>
+                <button class="category-filter" data-category="Storage">Storage</button>
             </div>
 
             <!-- Product Grid -->
@@ -345,7 +350,15 @@
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>
-                    <ul>
+                    <div class="nav-actions">
+                    <a href="index.html" class="nav-link">Back to Home</a>
+                    <a href="profile.html" id="userLink" class="user-link">
+                        <span id="userDisplayName">User</span>
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <button id="logoutBtn" class="btn-logout" style="display: none;">Logout</button>
+                </div>
+                <ul>
                         <li><a href="index.html">Home</a></li>
                         <li><a href="#products">Products</a></li>
                         <li><a href="#laptops">Laptops</a></li>

@@ -157,6 +157,8 @@ async function checkSupabaseAuth() {
     if (user && authButtons && userLink) {
         authButtons.style.display = 'none';
         userLink.style.display = 'flex';
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) logoutBtn.style.display = 'inline-block';
         const profile = await getUserProfile(user.id);
         if (profile) {
             document.getElementById('userDisplayName').textContent = profile.first_name || user.email;
@@ -179,6 +181,8 @@ async function checkSupabaseAuth() {
     } else if (authButtons && userLink) {
         authButtons.style.display = 'flex';
         userLink.style.display = 'none';
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) logoutBtn.style.display = 'none';
     }
 
     // Redirect to login if not authenticated on profile or home page
@@ -247,3 +251,14 @@ if (!document.querySelector('style[data-auth]')) {
 
 // Check auth on every page load
 window.addEventListener('DOMContentLoaded', checkSupabaseAuth);
+
+// Logout button event listener
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', async () => {
+        const success = await logoutUser();
+        if (success) {
+            window.location.href = 'index.html';
+        }
+    });
+}

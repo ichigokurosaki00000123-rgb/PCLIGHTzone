@@ -809,15 +809,63 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Product card hover effects
-document.querySelectorAll('.product-card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-15px) scale(1.02)';
+// Product display and filtering
+function displayProducts(category) {
+    const grid = document.getElementById('productsGrid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+
+    let products = [];
+
+    if (category === 'all') {
+        // Flatten all parts categories
+        Object.values(partsData).forEach(catProducts => {
+            products.push(...catProducts);
+        });
+    } else if (partsData[category]) {
+        products = partsData[category];
+    }
+
+    if (products.length === 0) {
+        grid.innerHTML = '<p class="no-products">No products found in this category.</p>';
+        return;
+    }
+
+    products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+            <div class="product-image">
+                <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/140x140/1a1a2e/ffd700?text=Product'">
+            </div>
+            <div class="product-info">
+                <h3 class="product-name">${product.name}</h3>
+                <p class="product-price">${product.price}</p>
+                <button class="btn-add-cart" onclick="addToCart(this)" 
+                    data-name="${product.name}" 
+                    data-price="${product.price}" 
+                    data-image="${product.image}">Add to Cart</button>
+            </div>
+        `;
+        grid.appendChild(card);
     });
-    
-    card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
+}
+
+// Tab filtering
+document.addEventListener('DOMContentLoaded', () => {
+    const filters = document.querySelectorAll('.category-filter');
+    filters.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filters.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const category = btn.dataset.category;
+            displayProducts(category);
+        });
     });
+
+    // Display all products by default
+    displayProducts('all');
 });
 
 // Brand card interactive effects
